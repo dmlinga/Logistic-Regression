@@ -1,0 +1,74 @@
+---
+title: "Logistic Regression"
+author: "Daniel Mlinga"
+format: pdf
+editor: visual
+---
+
+Model 1
+
+```{r}
+library(Stat2Data)
+data(CreditRisk)
+mod1 <- glm(Overdrawn~DaysDrink, data= CreditRisk, family = binomial(link = 'logit')) 
+summary(mod1)
+plot(mod1)
+emplogitplot1(Overdrawn~DaysDrink, data = CreditRisk, ngroups = 'all', main = "Empirical Logit Plot for Model (Overdrawn ~ DaysDrink)")
+xlabel <- expression(Days~Drink)
+ylabel <- expression(hat(mu))
+```
+
+Model2
+
+```{r}
+mod2 <- glm(Overdrawn~Age, data= CreditRisk, family = binomial(link = 'logit')) 
+summary(mod2)
+plot(mod2)
+emplogitplot1(Overdrawn~Age, data = CreditRisk, ngroups = 'all', main = "Empirical Logit Plot for Model (Overdrawn ~ Age)")
+xlabel <- expression(Age)
+ylabel <- expression(hat(mu))
+```
+
+Model 3
+
+```{r}
+mod3 <- glm(Overdrawn~Sex, data= CreditRisk, family = binomial(link = 'logit'))
+summary(mod3)
+plot(mod3)
+emplogitplot1(Overdrawn~Age, data = CreditRisk, ngroups = 'all', main = "Empirical Logit Plot for Model (Overdrawn ~ Sex)")
+xlabel <- expression(Sex)
+ylabel <- expression(hat(mu))
+```
+
+```{r}
+# Diagnostic plots for mod1 (Overdrawn ~ DaysDrink)
+par(mfrow = c(2, 2))
+plot(mod1)
+
+# Diagnostic plots for mod2 (Overdrawn ~ Age)
+par(mfrow = c(2, 2))
+plot(mod2)
+
+# Diagnostic plots for mod3 (Overdrawn ~ Sex)
+par(mfrow = c(2, 2))
+plot(mod3)
+
+```
+
+```{r}
+# Extract coefficients and standard errors from the summary output
+coef_age <- coef(mod2)["Age"]
+se_age <- summary(mod2)$coef["Age", "Std. Error"]
+
+# Calculate odds ratio
+odds_ratio_age <- exp(coef_age)
+
+# Calculate confidence interval for odds ratio
+lower_ci <- exp(coef_age - 1.96 * se_age)
+upper_ci <- exp(coef_age + 1.96 * se_age)
+
+# Print results
+cat("Odds Ratio for Age:", odds_ratio_age, "\n")
+cat("95% Confidence Interval for Odds Ratio (Age):", lower_ci, "-", upper_ci, "\n")
+
+```
