@@ -1,4 +1,3 @@
-Daniel Mlinga   STAT 315
 
 Introduction:
 Data – CreditRisk (Stat2Data) 
